@@ -1,0 +1,13 @@
+name: Pillar
+version: '1.0'
+main: com.spektrsoyuz.pillar.PillarPlugin
+description: WIP
+api-version: '1.21.4'
+load: STARTUP
+authors: [ SpektrSoyuz ]
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: false
+      join-classpath: true
