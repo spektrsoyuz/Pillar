@@ -1,4 +1,4 @@
-package com.spektrsoyuz.pillar.command.tpa;
+package com.spektrsoyuz.pillar.tpa;
 
 public enum TeleportRequestType {
     TPA("command.tpa.incoming", "command.tpa.outgoing"),
@@ -7,10 +7,7 @@ public enum TeleportRequestType {
     public final String incomingMessage;
     public final String outgoingMessage;
 
-    TeleportRequestType(
-            final String incomingMessage,
-            final String outgoingMessage
-    ) {
+    TeleportRequestType(final String incomingMessage, final String outgoingMessage) {
         this.incomingMessage = incomingMessage;
         this.outgoingMessage = outgoingMessage;
     }

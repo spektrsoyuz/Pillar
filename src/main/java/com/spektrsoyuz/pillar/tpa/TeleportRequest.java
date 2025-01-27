@@ -1,4 +1,4 @@
-package com.spektrsoyuz.pillar.command.tpa;
+package com.spektrsoyuz.pillar.tpa;
 
 import org.bukkit.entity.Player;
 
