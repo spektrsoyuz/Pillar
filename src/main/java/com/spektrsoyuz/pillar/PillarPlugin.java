@@ -5,9 +5,13 @@
  */
 package com.spektrsoyuz.pillar;
 
+import com.spektrsoyuz.pillar.command.server.BroadcastCommand;
 import com.spektrsoyuz.pillar.config.ConfigManager;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.java.JavaPlugin;
 
+@SuppressWarnings({"UnstableApiUsage"})
 public final class PillarPlugin extends JavaPlugin {
 
     private ConfigManager configManager;
@@ -21,6 +25,8 @@ public final class PillarPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        registerCommands();
+        registerListeners();
     }
 
     @Override
@@ -28,7 +34,19 @@ public final class PillarPlugin extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public ConfigManager getConfigManager() {
+    public ConfigManager config() {
         return configManager;
+    }
+
+    private void registerCommands() {
+        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
+            final Commands registrar = commands.registrar();
+
+            new BroadcastCommand(this).register(registrar);
+        });
+    }
+
+    private void registerListeners() {
+
     }
 }

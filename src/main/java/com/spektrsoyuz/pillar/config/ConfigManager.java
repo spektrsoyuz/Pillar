@@ -6,6 +6,13 @@
 package com.spektrsoyuz.pillar.config;
 
 import com.spektrsoyuz.pillar.PillarPlugin;
+import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
@@ -15,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -23,13 +31,16 @@ public class ConfigManager {
     private final PillarPlugin plugin;
     private final File dataFolder;
     private final Logger logger;
+    private final MiniMessage mm;
     private final Map<String, CommentedConfigurationNode> configs;
+    private Locale locale;
 
     // Constructor
     public ConfigManager(final PillarPlugin plugin) {
         this.plugin = plugin;
         this.dataFolder = plugin.getDataFolder();
         this.logger = plugin.getLogger();
+        this.mm = MiniMessage.miniMessage();
         this.configs = new HashMap<>();
 
         loadConfigs();
@@ -63,6 +74,9 @@ public class ConfigManager {
                 loadConfig(localeFile.getName(), "locale/" + localeFile.getName());
             }
         }
+
+        final ConfigurationNode node = configs.get("config").node("locale");
+        this.locale = Locale.forLanguageTag(node.getString("locale"));
     }
 
     // Method to load a config file into the configs map
@@ -85,6 +99,23 @@ public class ConfigManager {
         configs.put(name, root);
     }
 
+    public Component getMessage(String key, Player player, Map<String, String> placeholders) {
+        String message = configs.get(locale.getDisplayName()).node("messages").node(key).getString();
+        if (message == null) {
+            return Component.text(key);
+        }
+
+        if (placeholders != null) {
+            for (Map.Entry<String, String> entry : placeholders.entrySet()) {
+                message = message.replace("{" + entry.getKey() + "}", entry.getValue());
+            }
+        }
+
+        return player == null
+                ? mm.deserialize(message)
+                : mm.deserialize(message, papiTag(player));
+    }
+
     // Method to get the database settings from the primary config
     public DatabaseSettings getDatabaseSettings() {
         final ConfigurationNode node = configs.get("config").node("database");
@@ -103,5 +134,13 @@ public class ConfigManager {
         } catch (SerializationException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static @NotNull TagResolver papiTag(final @NotNull Player player) {
+        return TagResolver.resolver("papi", (argumentQueue, context) -> {
+            String placeholder = argumentQueue.popOr("papi tag requires an argument").value();
+            String parsed = PlaceholderAPI.setPlaceholders(player, '%' + placeholder + '%');
+            return Tag.selfClosingInserting(Component.text(parsed));
+        });
     }
 }
