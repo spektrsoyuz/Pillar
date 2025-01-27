@@ -7,6 +7,7 @@ package com.spektrsoyuz.pillar;
 
 import com.spektrsoyuz.pillar.command.server.BroadcastCommand;
 import com.spektrsoyuz.pillar.config.ConfigManager;
+import com.spektrsoyuz.pillar.command.tpa.TPAManager;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,11 +16,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class PillarPlugin extends JavaPlugin {
 
     private ConfigManager configManager;
+    private TPAManager tpaManager;
 
     @Override
     public void onLoad() {
         // Plugin load logic
-        configManager = new ConfigManager(this);
+        registerManagers();
     }
 
     @Override
@@ -34,15 +36,24 @@ public final class PillarPlugin extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public ConfigManager config() {
+    public ConfigManager getConfigManager() {
         return configManager;
+    }
+
+    public TPAManager getTPAManager() {
+        return tpaManager;
+    }
+
+    private void registerManagers() {
+        configManager = new ConfigManager(this);
+        tpaManager = new TPAManager(this);
     }
 
     private void registerCommands() {
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
             final Commands registrar = commands.registrar();
 
-            new BroadcastCommand(this).register(registrar);
+            new BroadcastCommand(this, registrar);
         });
     }
 

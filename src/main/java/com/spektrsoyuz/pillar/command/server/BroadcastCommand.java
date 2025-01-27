@@ -1,3 +1,8 @@
+/*
+ * Pillar
+ * Created by SpektrSoyuz
+ * All Rights Reserved
+ */
 package com.spektrsoyuz.pillar.command.server;
 
 import com.mojang.brigadier.Command;
@@ -5,24 +10,23 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.spektrsoyuz.pillar.PillarPlugin;
+import com.spektrsoyuz.pillar.config.ConfigManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
 
-import java.util.Map;
-
 @SuppressWarnings({"UnstableApiUsage"})
 public class BroadcastCommand {
 
     private final PillarPlugin plugin;
+    private final ConfigManager config;
 
-    public BroadcastCommand(final PillarPlugin plugin) {
+    public BroadcastCommand(final PillarPlugin plugin, final Commands registrar) {
         this.plugin = plugin;
-    }
+        this.config = plugin.getConfigManager();
 
-    public void register(final Commands registrar) {
         final LiteralCommandNode<CommandSourceStack> node = Commands.literal("broadcast")
                 .requires(stack -> stack.getSender().hasPermission("pillar.command.broadcast"))
                 .executes(context -> {
@@ -39,7 +43,7 @@ public class BroadcastCommand {
 
     private int broadcast(final CommandContext<CommandSourceStack> context) {
         final String message = context.getArgument("message", String.class);
-        final Component component = plugin.config().getMessage("command.broadcast", null, Map.of("message", message));
+        final Component component = config.getMessage("command.broadcast.message", config.placeholder("message", message));
         plugin.getServer().broadcast(component);
         return Command.SINGLE_SUCCESS;
     }

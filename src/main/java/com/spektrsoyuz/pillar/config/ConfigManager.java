@@ -12,7 +12,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
@@ -20,10 +19,7 @@ import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class ConfigManager {
@@ -99,21 +95,14 @@ public class ConfigManager {
         configs.put(name, root);
     }
 
-    public Component getMessage(String key, Player player, Map<String, String> placeholders) {
+    // Method to get a message from the locale config
+    public Component getMessage(final String key, final TagResolver... resolvers) {
         String message = configs.get(locale.getDisplayName()).node("messages").node(key).getString();
         if (message == null) {
             return Component.text(key);
         }
 
-        if (placeholders != null) {
-            for (Map.Entry<String, String> entry : placeholders.entrySet()) {
-                message = message.replace("{" + entry.getKey() + "}", entry.getValue());
-            }
-        }
-
-        return player == null
-                ? mm.deserialize(message)
-                : mm.deserialize(message, papiTag(player));
+        return mm.deserialize(key, resolvers);
     }
 
     // Method to get the database settings from the primary config
@@ -136,10 +125,18 @@ public class ConfigManager {
         }
     }
 
-    public static @NotNull TagResolver papiTag(final @NotNull Player player) {
-        return TagResolver.resolver("papi", (argumentQueue, context) -> {
-            String placeholder = argumentQueue.popOr("papi tag requires an argument").value();
-            String parsed = PlaceholderAPI.setPlaceholders(player, '%' + placeholder + '%');
+    public TagResolver papiTag(final Player player) {
+        return TagResolver.resolver("papi", (args, context) -> {
+            final String placeholder = args.popOr("papi tag requires an argument").value();
+            final String parsed = PlaceholderAPI.setPlaceholders(player, '%' + placeholder + '%');
+            return Tag.selfClosingInserting(Component.text(parsed));
+        });
+    }
+
+    public TagResolver placeholder(final String key, final String value) {
+        return TagResolver.resolver("pillar", (args, context) -> {
+            final String message = args.popOr("arguments expected").value();
+            final String parsed = message.replace("{" + key + "}", value);
             return Tag.selfClosingInserting(Component.text(parsed));
         });
     }
