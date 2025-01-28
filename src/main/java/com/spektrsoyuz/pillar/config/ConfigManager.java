@@ -125,6 +125,16 @@ public class ConfigManager {
         }
     }
 
+    // Method to get the social settings from the primary config
+    public SocialSettings getSocialSettings() {
+        final ConfigurationNode node = configs.get("config").node("social");
+        try {
+            return node.get(SocialSettings.class);
+        } catch (SerializationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public TagResolver papiTag(final Player player) {
         return TagResolver.resolver("papi", (args, context) -> {
             final String placeholder = args.popOr("papi tag requires an argument").value();

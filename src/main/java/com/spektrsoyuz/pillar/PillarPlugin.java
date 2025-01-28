@@ -5,8 +5,10 @@
  */
 package com.spektrsoyuz.pillar;
 
-import com.spektrsoyuz.pillar.command.server.BroadcastCommand;
+import com.spektrsoyuz.pillar.command.server.*;
+import com.spektrsoyuz.pillar.command.social.*;
 import com.spektrsoyuz.pillar.config.ConfigManager;
+import com.spektrsoyuz.pillar.config.SocialSettings;
 import com.spektrsoyuz.pillar.tpa.TPAManager;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -51,7 +53,35 @@ public final class PillarPlugin extends JavaPlugin {
             final Commands registrar = commands.registrar();
 
             new BroadcastCommand(this, registrar);
+
+            socialCommands(registrar);
         });
+    }
+
+    private void socialCommands(final Commands registrar) {
+        final SocialSettings social = configManager.getSocialSettings();
+
+        if (social.isDiscord()) {
+            new DiscordCommand(this, registrar);
+        }
+        if (social.isForums()) {
+            new ForumsCommand(this, registrar);
+        }
+        if (social.isReddit()) {
+            new RedditCommand(this, registrar);
+        }
+        if (social.isTwitch()) {
+            new TwitchCommand(this, registrar);
+        }
+        if (social.isTwitter()) {
+            new TwitterCommand(this, registrar);
+        }
+        if (social.isWebsite()) {
+            new WebsiteCommand(this, registrar);
+        }
+        if (social.isYoutube()) {
+            new YoutubeCommand(this, registrar);
+        }
     }
 
     private void registerListeners() {

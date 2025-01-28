@@ -8,7 +8,6 @@ package com.spektrsoyuz.pillar.command.server;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.spektrsoyuz.pillar.PillarPlugin;
 import com.spektrsoyuz.pillar.config.ConfigManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -27,7 +26,7 @@ public class BroadcastCommand {
         this.plugin = plugin;
         this.config = plugin.getConfigManager();
 
-        final LiteralCommandNode<CommandSourceStack> node = Commands.literal("broadcast")
+        var node = Commands.literal("broadcast")
                 .requires(stack -> stack.getSender().hasPermission("pillar.command.broadcast"))
                 .executes(context -> {
                     final CommandSender sender = context.getSource().getSender();
