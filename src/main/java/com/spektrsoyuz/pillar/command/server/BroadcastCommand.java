@@ -14,6 +14,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.command.CommandSender;
 
 @SuppressWarnings({"UnstableApiUsage"})
@@ -42,7 +43,7 @@ public class BroadcastCommand {
 
     private int broadcast(final CommandContext<CommandSourceStack> context) {
         final String message = context.getArgument("message", String.class);
-        final Component component = config.getMessage("command.broadcast.message", config.placeholder("message", message));
+        final Component component = config.getMessage("command-broadcast-message", Placeholder.parsed("message", message));
         plugin.getServer().broadcast(component);
         return Command.SINGLE_SUCCESS;
     }

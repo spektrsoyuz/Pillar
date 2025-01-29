@@ -12,6 +12,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
+import org.slf4j.LoggerFactory;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
@@ -24,12 +25,13 @@ import java.util.logging.Logger;
 
 public class ConfigManager {
 
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(ConfigManager.class);
     private final PillarPlugin plugin;
     private final File dataFolder;
     private final Logger logger;
     private final MiniMessage mm;
     private final Map<String, CommentedConfigurationNode> configs;
-    private Locale locale;
+    private String locale;
 
     // Constructor
     public ConfigManager(final PillarPlugin plugin) {
@@ -67,12 +69,12 @@ public class ConfigManager {
         final File[] localeFiles = localeFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".conf"));
         if (localeFiles != null) {
             for (final File localeFile : localeFiles) {
-                loadConfig(localeFile.getName(), "locale/" + localeFile.getName());
+                loadConfig(localeFile.getName().split("\\.")[0], "locale/" + localeFile.getName());
             }
         }
 
         final ConfigurationNode node = configs.get("config").node("locale");
-        this.locale = Locale.forLanguageTag(node.getString("locale"));
+        this.locale = node.getString("locale");
     }
 
     // Method to load a config file into the configs map
@@ -97,12 +99,14 @@ public class ConfigManager {
 
     // Method to get a message from the locale config
     public Component getMessage(final String key, final TagResolver... resolvers) {
-        String message = configs.get(locale.getDisplayName()).node("messages").node(key).getString();
+        ConfigurationNode node = configs.get(locale).node("messages", key);
+        String message = node.getString();
+
         if (message == null) {
             return Component.text(key);
         }
 
-        return mm.deserialize(key, resolvers);
+        return mm.deserialize(message, resolvers);
     }
 
     // Method to get the database settings from the primary config
@@ -139,14 +143,6 @@ public class ConfigManager {
         return TagResolver.resolver("papi", (args, context) -> {
             final String placeholder = args.popOr("papi tag requires an argument").value();
             final String parsed = PlaceholderAPI.setPlaceholders(player, '%' + placeholder + '%');
-            return Tag.selfClosingInserting(Component.text(parsed));
-        });
-    }
-
-    public TagResolver placeholder(final String key, final String value) {
-        return TagResolver.resolver("pillar", (args, context) -> {
-            final String message = args.popOr("arguments expected").value();
-            final String parsed = message.replace("{" + key + "}", value);
             return Tag.selfClosingInserting(Component.text(parsed));
         });
     }

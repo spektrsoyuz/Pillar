@@ -2,6 +2,7 @@ package com.spektrsoyuz.pillar.tpa;
 
 import com.spektrsoyuz.pillar.PillarPlugin;
 import com.spektrsoyuz.pillar.config.ConfigManager;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -42,8 +43,8 @@ public class TPAManager {
 
     public void expireRequest(final Player player, final Player sender, final TeleportRequestType type) {
         if (!removeRequest(player, sender, type)) return;
-        sender.sendMessage(config.getMessage("command.tpa.timeout.self", null, config.placeholder("player", player.getName()), config.papiTag(player)));
-        player.sendMessage(config.getMessage("command.tpa.timeout", null, config.placeholder("player", sender.getName()), config.papiTag(sender)));
+        sender.sendMessage(config.getMessage("command.tpa.timeout.self", null, Placeholder.parsed("player", player.getName()), config.papiTag(player)));
+        player.sendMessage(config.getMessage("command.tpa.timeout", null, Placeholder.parsed("player", sender.getName()), config.papiTag(sender)));
     }
 
     public boolean removeRequest(final Player sender, final Player player, final TeleportRequestType type) {
