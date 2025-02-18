@@ -12,7 +12,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
-import org.slf4j.LoggerFactory;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
@@ -25,7 +24,6 @@ import java.util.logging.Logger;
 
 public class ConfigManager {
 
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(ConfigManager.class);
     private final PillarPlugin plugin;
     private final File dataFolder;
     private final Logger logger;
