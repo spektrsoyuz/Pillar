@@ -23,6 +23,7 @@ public class BroadcastCommand {
     private final PillarPlugin plugin;
     private final ConfigManager config;
 
+    // Constructor
     public BroadcastCommand(final PillarPlugin plugin, final Commands registrar) {
         this.plugin = plugin;
         this.config = plugin.getConfigManager();

@@ -13,6 +13,7 @@ public class SocialSettings {
     private final boolean website;
     private final boolean youtube;
 
+    // Constructor
     public SocialSettings() {
         this.discord = false;
         this.forums = false;

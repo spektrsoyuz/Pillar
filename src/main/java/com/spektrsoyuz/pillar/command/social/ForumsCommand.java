@@ -14,6 +14,7 @@ import org.bukkit.command.CommandSender;
 @SuppressWarnings({"UnstableApiUsage"})
 public class ForumsCommand {
 
+    // Constructor
     public ForumsCommand(final PillarPlugin plugin, final Commands registrar) {
         final ConfigManager config = plugin.getConfigManager();
 

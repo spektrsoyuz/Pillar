@@ -16,6 +16,7 @@ import java.util.List;
 @SuppressWarnings({"UnstableApiUsage"})
 public class TwitterCommand {
 
+    // Constructor
     public TwitterCommand(final PillarPlugin plugin, final Commands registrar) {
         final ConfigManager config = plugin.getConfigManager();
 

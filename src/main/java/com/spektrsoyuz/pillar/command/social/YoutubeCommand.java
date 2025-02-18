@@ -11,9 +11,12 @@ import com.spektrsoyuz.pillar.config.ConfigManager;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.command.CommandSender;
 
+import java.util.List;
+
 @SuppressWarnings({"UnstableApiUsage"})
 public class YoutubeCommand {
 
+    // Constructor
     public YoutubeCommand(final PillarPlugin plugin, final Commands registrar) {
         final ConfigManager config = plugin.getConfigManager();
 
@@ -26,6 +29,6 @@ public class YoutubeCommand {
                 })
                 .build();
 
-        registrar.register(node);
+        registrar.register(node, List.of("yt)"));
     }
 }
