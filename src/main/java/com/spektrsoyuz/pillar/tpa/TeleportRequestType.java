@@ -1,8 +1,8 @@
 package com.spektrsoyuz.pillar.tpa;
 
 public enum TeleportRequestType {
-    TPA("command.tpa.incoming", "command.tpa.outgoing"),
-    TPAHERE("command.tpa.here.incoming", "command.tpa.here.outgoing");
+    TPA("command-tpa-incoming", "command-tpa-outgoing"),
+    TPAHERE("command-tpa-here-incoming", "command-tpa-here-outgoing");
 
     public final String incomingMessage;
     public final String outgoingMessage;
