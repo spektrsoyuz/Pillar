@@ -68,7 +68,7 @@ public class ConfigManager {
 
         if (message != null) {
             for (final ConfigPlaceholder placeholder : placeholders) {
-                message = message.replaceAll("{" + placeholder.getName() + "}", placeholder.getValue());
+                message = message.replace("{" + placeholder.getName() + "}", placeholder.getValue());
             }
             return mm.deserialize(message);
         } else {
