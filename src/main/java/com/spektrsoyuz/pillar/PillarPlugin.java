@@ -6,6 +6,7 @@
 package com.spektrsoyuz.pillar;
 
 import com.spektrsoyuz.pillar.command.player.GamemodeCommand;
+import com.spektrsoyuz.pillar.command.player.SingleGamemodeCommands;
 import com.spektrsoyuz.pillar.command.server.*;
 import com.spektrsoyuz.pillar.command.social.*;
 import com.spektrsoyuz.pillar.config.ConfigManager;
@@ -48,6 +49,7 @@ public final class PillarPlugin extends JavaPlugin {
             final Commands registrar = commands.registrar();
 
             new GamemodeCommand(this, registrar);
+            new SingleGamemodeCommands(this, registrar);
             new BroadcastCommand(this, registrar);
 
             socialCommands(registrar);
