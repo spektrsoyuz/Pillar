@@ -33,6 +33,7 @@ public final class GamemodeCommand {
                             && sender instanceof Player;
                 })
                 .then(Commands.argument("gamemode", ArgumentTypes.gameMode())
+                        .requires(stack -> stack.getSender().hasPermission("pillar.command.gamemode.other"))
                         .executes(this::setGamemode)
                         .then(Commands.argument("target", ArgumentTypes.player())
                                 .executes(this::setGamemodeOther)))
