@@ -1,7 +1,9 @@
 package com.spektrsoyuz.pillar.config;
 
+import lombok.Getter;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
+@Getter
 @ConfigSerializable
 public class SocialSettings {
 
@@ -22,33 +24,5 @@ public class SocialSettings {
         this.twitter = false;
         this.website = false;
         this.youtube = false;
-    }
-
-    public boolean isDiscord() {
-        return discord;
-    }
-
-    public boolean isForums() {
-        return forums;
-    }
-
-    public boolean isReddit() {
-        return reddit;
-    }
-
-    public boolean isTwitch() {
-        return twitch;
-    }
-
-    public boolean isTwitter() {
-        return twitter;
-    }
-
-    public boolean isWebsite() {
-        return website;
-    }
-
-    public boolean isYoutube() {
-        return youtube;
     }
 }

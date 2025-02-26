@@ -5,8 +5,10 @@
  */
 package com.spektrsoyuz.pillar.config;
 
+import lombok.Getter;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
+@Getter
 @ConfigSerializable
 public class DatabaseSettings {
     private final String type;
@@ -26,33 +28,5 @@ public class DatabaseSettings {
         this.username = "username";
         this.password = "";
         this.tablePrefix = "pillar";
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public String getDatabase() {
-        return database;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getTablePrefix() {
-        return tablePrefix;
     }
 }
