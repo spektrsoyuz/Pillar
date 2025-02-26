@@ -6,8 +6,10 @@
 package com.spektrsoyuz.pillar.command.social;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.spektrsoyuz.pillar.PillarPlugin;
 import com.spektrsoyuz.pillar.config.ConfigManager;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.command.CommandSender;
 
@@ -20,7 +22,7 @@ public class YoutubeCommand {
     public YoutubeCommand(final PillarPlugin plugin, final Commands registrar) {
         final ConfigManager config = plugin.getConfigManager();
 
-        var node = Commands.literal("youtube")
+        final LiteralCommandNode<CommandSourceStack> node = Commands.literal("youtube")
                 .requires(stack -> stack.getSender().hasPermission("pillar.command.youtube"))
                 .executes(context -> {
                     final CommandSender sender = context.getSource().getSender();

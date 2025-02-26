@@ -12,8 +12,10 @@ import com.spektrsoyuz.pillar.config.SocialSettings;
 import com.spektrsoyuz.pillar.tpa.TPAManager;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
+@Getter
 @SuppressWarnings({"UnstableApiUsage"})
 public final class PillarPlugin extends JavaPlugin {
 
@@ -40,14 +42,6 @@ public final class PillarPlugin extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public ConfigManager getConfigManager() {
-        return configManager;
-    }
-
-    public TPAManager getTPAManager() {
-        return tpaManager;
-    }
-
     private void registerCommands() {
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
             final Commands registrar = commands.registrar();
@@ -56,6 +50,10 @@ public final class PillarPlugin extends JavaPlugin {
 
             socialCommands(registrar);
         });
+    }
+
+    private void registerListeners() {
+
     }
 
     private void socialCommands(final Commands registrar) {
@@ -82,9 +80,5 @@ public final class PillarPlugin extends JavaPlugin {
         if (social.isYoutube()) {
             new YoutubeCommand(this, registrar);
         }
-    }
-
-    private void registerListeners() {
-
     }
 }
