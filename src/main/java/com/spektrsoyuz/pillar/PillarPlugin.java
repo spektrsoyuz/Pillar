@@ -14,7 +14,6 @@ import com.spektrsoyuz.pillar.listener.PlayerListener;
 import com.spektrsoyuz.pillar.player.PillarPlayerManager;
 import com.spektrsoyuz.pillar.storage.DatabaseManager;
 import com.spektrsoyuz.pillar.task.SavePillarPlayerTask;
-import com.spektrsoyuz.pillar.task.SavePlayerHomeTask;
 import com.spektrsoyuz.pillar.tpa.TPAManager;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -121,6 +120,5 @@ public final class PillarPlugin extends JavaPlugin {
     private void registerTasks() {
         BukkitScheduler scheduler = getServer().getScheduler();
         scheduler.runTaskTimerAsynchronously(this, new SavePillarPlayerTask(this), 1200, 1200); // update every minute
-        scheduler.runTaskTimerAsynchronously(this, new SavePlayerHomeTask(this), 1200, 1200); // update every minute
     }
 }
