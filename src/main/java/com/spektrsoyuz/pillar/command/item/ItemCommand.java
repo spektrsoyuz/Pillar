@@ -22,8 +22,12 @@ import org.bukkit.inventory.ItemStack;
 @SuppressWarnings({"UnstableApiUsage"})
 public final class ItemCommand {
 
+    private final PillarPlugin plugin;
+
     // Constructor
     public ItemCommand(final PillarPlugin plugin, final Commands registrar) {
+        this.plugin = plugin;
+
         final LiteralCommandNode<CommandSourceStack> node = Commands.literal("item")
                 .requires(stack -> {
                     final CommandSender sender = stack.getSender();
@@ -34,13 +38,7 @@ public final class ItemCommand {
                             final Player player = (Player) context.getSource().getSender();
                             final ItemStack itemStack = context.getArgument("item", ItemStack.class);
 
-                            final String itemName = PlainTextComponentSerializer.plainText().serialize(itemStack.displayName());
-
-                            player.give(itemStack);
-                            player.sendMessage(plugin.getConfigManager().getMessage("command-item",
-                                    new ConfigPlaceholder("item", itemName),
-                                    new ConfigPlaceholder("amount", "1")));
-                            return Command.SINGLE_SUCCESS;
+                            return giveItem(player, itemStack, 1);
                         })
                         .then(Commands.argument("amount", IntegerArgumentType.integer())
                                 .executes(context -> {
@@ -48,17 +46,22 @@ public final class ItemCommand {
                                     final ItemStack itemStack = context.getArgument("item", ItemStack.class);
                                     final int amount = context.getArgument("amount", Integer.class);
 
-                                    final String itemName = PlainTextComponentSerializer.plainText().serialize(itemStack.displayName());
-                                    itemStack.setAmount(amount);
-
-                                    player.give(itemStack);
-                                    player.sendMessage(plugin.getConfigManager().getMessage("command-item",
-                                            new ConfigPlaceholder("item", itemName),
-                                            new ConfigPlaceholder("amount", String.valueOf(amount))));
-                                    return Command.SINGLE_SUCCESS;
+                                    return giveItem(player, itemStack, amount);
                                 })))
                 .build();
 
         registrar.register(node, "Summon an item");
+    }
+
+    // Method to give a player an item
+    private int giveItem(final Player player, final ItemStack itemStack, int amount) {
+        final String itemName = PlainTextComponentSerializer.plainText().serialize(itemStack.displayName());
+
+        itemStack.setAmount(amount);
+        player.give(itemStack);
+        player.sendMessage(plugin.getConfigManager().getMessage("command-item",
+                new ConfigPlaceholder("item", itemName),
+                new ConfigPlaceholder("amount", String.valueOf(amount))));
+        return Command.SINGLE_SUCCESS;
     }
 }
