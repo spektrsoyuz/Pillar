@@ -75,7 +75,7 @@ public final class DatabaseManager {
         CompletableFuture.runAsync(() -> {
             try (Connection connection = getConnection()) {
                 final String sql = "INSERT INTO " + playersTable + " (id, username, back_location) VALUES (?, ?, ?)" +
-                        "ON DUPLICATE KEY UPDATE username = ?, back_location = ?;";
+                        " ON DUPLICATE KEY UPDATE username = ?, back_location = ?;";
                 final PreparedStatement statement = connection.prepareStatement(sql);
 
                 // Insert values if missing
