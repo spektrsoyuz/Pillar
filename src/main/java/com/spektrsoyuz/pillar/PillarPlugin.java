@@ -42,6 +42,8 @@ public final class PillarPlugin extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         databaseManager = new DatabaseManager(this);
+        databaseManager.init();
+        databaseManager.createTables();
         pillarPlayerManager = new PillarPlayerManager(this);
         tpaManager = new TPAManager(this);
 
@@ -52,6 +54,11 @@ public final class PillarPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        pillarPlayerManager.saveAll();
+
+        if (databaseManager != null) {
+            databaseManager.close();
+        }
     }
 
     private void registerCommands() {
