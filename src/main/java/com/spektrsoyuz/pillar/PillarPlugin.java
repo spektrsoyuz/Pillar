@@ -72,6 +72,7 @@ public final class PillarPlugin extends JavaPlugin {
             new GMCCommand(this, registrar);
             new GMSCommand(this, registrar);
             new GMSPCommand(this, registrar);
+            new PingCommand(this, registrar);
             new BroadcastCommand(this, registrar);
 
             socialCommands(registrar);

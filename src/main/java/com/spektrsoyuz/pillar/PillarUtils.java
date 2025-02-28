@@ -26,6 +26,7 @@ public final class PillarUtils {
     public static final String PERMISSION_COMMAND_BACK = "pillar.command.back";
     public static final String PERMISSION_COMMAND_GAMEMODE = "pillar.command.gamemode";
     public static final String PERMISSION_COMMAND_GAMEMODE_OTHER = "pillar.command.gamemode.other";
+    public static final String PERMISSION_COMMAND_PING = "pillar.command.ping";
     public static final String PERMISSION_COMMAND_BROADCAST = "pillar.command.broadcast";
     public static final String PERMISSION_COMMAND_SOCIAL = "pillar.command.social";
 
