@@ -25,13 +25,17 @@ public final class PillarUtils {
 
     public static final int CONFIG_VERSION = 1;
 
+    public static final String PERMISSION_COMMAND_ITEM = "pillar.command.item";
+
     public static final String PERMISSION_COMMAND_BACK = "pillar.command.back";
     public static final String PERMISSION_COMMAND_GAMEMODE = "pillar.command.gamemode";
     public static final String PERMISSION_COMMAND_GAMEMODE_OTHER = "pillar.command.gamemode.other";
     public static final String PERMISSION_COMMAND_KILL = "pillar.command.kill";
     public static final String PERMISSION_COMMAND_KILL_SEE = "pillar.command.kill.see";
     public static final String PERMISSION_COMMAND_PING = "pillar.command.ping";
+
     public static final String PERMISSION_COMMAND_BROADCAST = "pillar.command.broadcast";
+
     public static final String PERMISSION_COMMAND_SOCIAL = "pillar.command.social";
 
     // Method to set the GameMode of a Player

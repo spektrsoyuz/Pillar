@@ -5,6 +5,7 @@
  */
 package com.spektrsoyuz.pillar;
 
+import com.spektrsoyuz.pillar.command.item.ItemCommand;
 import com.spektrsoyuz.pillar.command.player.*;
 import com.spektrsoyuz.pillar.command.server.*;
 import com.spektrsoyuz.pillar.command.social.*;
@@ -68,6 +69,9 @@ public final class PillarPlugin extends JavaPlugin {
     private void registerCommands() {
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
             final Commands registrar = commands.registrar();
+
+            // Item commands
+            new ItemCommand(this, registrar);
 
             // Player commands
             new BackCommand(this, registrar);
