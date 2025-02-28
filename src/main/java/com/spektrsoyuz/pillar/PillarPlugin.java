@@ -10,6 +10,7 @@ import com.spektrsoyuz.pillar.command.server.*;
 import com.spektrsoyuz.pillar.command.social.*;
 import com.spektrsoyuz.pillar.config.ConfigManager;
 import com.spektrsoyuz.pillar.config.SocialSettings;
+import com.spektrsoyuz.pillar.listener.PlayerListener;
 import com.spektrsoyuz.pillar.player.PillarPlayerManager;
 import com.spektrsoyuz.pillar.storage.DatabaseManager;
 import com.spektrsoyuz.pillar.tpa.TPAManager;
@@ -78,7 +79,7 @@ public final class PillarPlugin extends JavaPlugin {
     }
 
     private void registerListeners() {
-
+        new PlayerListener(this);
     }
 
     private void socialCommands(final Commands registrar) {

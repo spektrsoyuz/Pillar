@@ -1,3 +1,8 @@
+/*
+ * Pillar
+ * Created by SpektrSoyuz
+ * All Rights Reserved
+ */
 package com.spektrsoyuz.pillar.player;
 
 import com.spektrsoyuz.pillar.PillarPlugin;
@@ -29,6 +34,14 @@ public final class PillarPlayerManager {
         }
 
         final PillarPlayer pillarPlayer = new PillarPlayer(player);
+        plugin.getDatabaseManager().queryPillarPlayer(player.getUniqueId()).thenAccept(dbPlayer -> {
+            if (dbPlayer != null) {
+                pillarPlayer.setUsername(dbPlayer.getUsername());
+                pillarPlayer.setBackLocation(dbPlayer.getBackLocation());
+            } else {
+                plugin.getDatabaseManager().savePillarPlayer(pillarPlayer);
+            }
+        });
 
         players.put(player.getUniqueId(), pillarPlayer);
         return pillarPlayer;
