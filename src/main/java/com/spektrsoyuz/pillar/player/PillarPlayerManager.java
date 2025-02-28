@@ -76,7 +76,9 @@ public final class PillarPlayerManager {
     // Save all PillarPlayer instances in cache to the database
     public void saveAll() {
         for (final PillarPlayer pillarPlayer : players.values()) {
-            plugin.getDatabaseManager().savePillarPlayer(pillarPlayer);
+            if (plugin.getDatabaseManager() != null) {
+                plugin.getDatabaseManager().savePillarPlayer(pillarPlayer);
+            }
         }
     }
 }

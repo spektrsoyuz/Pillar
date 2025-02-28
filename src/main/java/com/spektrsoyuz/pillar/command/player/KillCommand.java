@@ -35,6 +35,7 @@ public final class KillCommand {
                 .executes(context -> {
                     final Player player = (Player) context.getSource().getSender();
                     player.setHealth(0);
+                    player.sendMessage(plugin.getConfigManager().getMessage("command-kill"));
                     return Command.SINGLE_SUCCESS;
                 })
                 .then(Commands.argument("target", ArgumentTypes.player())
@@ -45,10 +46,15 @@ public final class KillCommand {
                             try {
                                 final List<Player> targets = targetResolver.resolve(context.getSource());
                                 for (Player target : targets) {
+                                    String senderMessage = "command-kill-other";
+                                    if (sender instanceof Player && sender.equals(target)) {
+                                        senderMessage = "command-kill";
+                                    }
+
                                     target.setHealth(0);
-                                    sender.sendMessage(plugin.getConfigManager().getMessage("command-kill", new ConfigPlaceholder("target", target.getName())));
+                                    sender.sendMessage(plugin.getConfigManager().getMessage(senderMessage, new ConfigPlaceholder("target", target.getName())));
                                     if (target.hasPermission(PillarUtils.PERMISSION_COMMAND_KILL_SEE)) {
-                                        target.sendMessage(plugin.getConfigManager().getMessage("command-kill-see", new ConfigPlaceholder("killer", sender.getName())));
+                                        target.sendMessage(plugin.getConfigManager().getMessage("command-kill-see", new ConfigPlaceholder("sender", sender.getName())));
                                     }
                                 }
                             } catch (CommandSyntaxException e) {
