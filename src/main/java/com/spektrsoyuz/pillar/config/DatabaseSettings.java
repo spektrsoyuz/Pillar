@@ -10,7 +10,7 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 @Getter
 @ConfigSerializable
-public class DatabaseSettings {
+public final class DatabaseSettings {
     private final String type;
     private final String host;
     private final int port;

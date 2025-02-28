@@ -5,8 +5,7 @@
  */
 package com.spektrsoyuz.pillar;
 
-import com.spektrsoyuz.pillar.command.player.GamemodeCommand;
-import com.spektrsoyuz.pillar.command.player.SingleGamemodeCommands;
+import com.spektrsoyuz.pillar.command.player.*;
 import com.spektrsoyuz.pillar.command.server.*;
 import com.spektrsoyuz.pillar.command.social.*;
 import com.spektrsoyuz.pillar.config.ConfigManager;
@@ -48,8 +47,12 @@ public final class PillarPlugin extends JavaPlugin {
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
             final Commands registrar = commands.registrar();
 
+            new BackCommand(this, registrar);
             new GamemodeCommand(this, registrar);
-            new SingleGamemodeCommands(this, registrar);
+            new GMACommand(this, registrar);
+            new GMCCommand(this, registrar);
+            new GMSCommand(this, registrar);
+            new GMSPCommand(this, registrar);
             new BroadcastCommand(this, registrar);
 
             socialCommands(registrar);

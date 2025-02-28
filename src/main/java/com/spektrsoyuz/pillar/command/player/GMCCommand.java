@@ -9,19 +9,18 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import org.bukkit.GameMode;
 
 @SuppressWarnings({"UnstableApiUsage"})
-public final class GamemodeCommand {
+public final class GMCCommand {
 
     // Constructor
-    public GamemodeCommand(final PillarPlugin plugin, final Commands registrar) {
-        final LiteralCommandNode<CommandSourceStack> node = Commands.literal("gamemode")
+    public GMCCommand(final PillarPlugin plugin, final Commands registrar) {
+        final LiteralCommandNode<CommandSourceStack> node = Commands.literal("gmc")
                 .requires(stack -> stack.getSender().hasPermission(PillarUtils.PERMISSION_COMMAND_GAMEMODE))
-                .then(Commands.argument("gamemode", ArgumentTypes.gameMode())
+                .executes(context -> PillarUtils.setGamemode(plugin, context, GameMode.CREATIVE))
+                .then(Commands.argument("target", ArgumentTypes.player())
                         .requires(stack -> stack.getSender().hasPermission(PillarUtils.PERMISSION_COMMAND_GAMEMODE_OTHER))
-                        .executes(context -> PillarUtils.setGamemode(plugin, context, context.getArgument("gamemode", GameMode.class)))
-                        .then(Commands.argument("target", ArgumentTypes.player())
-                                .executes(context -> PillarUtils.setGamemodeOther(plugin, context, context.getArgument("gamemode", GameMode.class)))))
+                        .executes(context -> PillarUtils.setGamemodeOther(plugin, context, GameMode.CREATIVE)))
                 .build();
 
-        registrar.register(node, "Set gamemode");
+        registrar.register(node, "Set gamemode to Adventure");
     }
 }

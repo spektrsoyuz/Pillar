@@ -9,6 +9,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.spektrsoyuz.pillar.PillarPlugin;
+import com.spektrsoyuz.pillar.PillarUtils;
 import com.spektrsoyuz.pillar.config.ConfigManager;
 import com.spektrsoyuz.pillar.config.ConfigPlaceholder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -23,7 +24,7 @@ public class BroadcastCommand {
         final ConfigManager config = plugin.getConfigManager();
 
         final LiteralCommandNode<CommandSourceStack> node = Commands.literal("broadcast")
-                .requires(stack -> stack.getSender().hasPermission("pillar.command.broadcast"))
+                .requires(stack -> stack.getSender().hasPermission(PillarUtils.PERMISSION_COMMAND_BROADCAST))
                 .then(Commands.argument("message", StringArgumentType.greedyString())
                         .executes(context -> {
                             final String message = context.getArgument("message", String.class);

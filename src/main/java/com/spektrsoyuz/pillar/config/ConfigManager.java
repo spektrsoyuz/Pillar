@@ -19,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-public class ConfigManager {
+public final class ConfigManager {
 
     private final PillarPlugin plugin;
     private final File dataFolder;
@@ -62,13 +62,13 @@ public class ConfigManager {
     }
 
     // Method to get a message from the config
-    public final Component getMessage(final String key, final ConfigPlaceholder... placeholders) {
+    public Component getMessage(final String key, final ConfigPlaceholder... placeholders) {
         ConfigurationNode node = messages.node("messages", key);
         String message = node.getString();
 
         if (message != null) {
             for (final ConfigPlaceholder placeholder : placeholders) {
-                message = message.replace("{" + placeholder.getName() + "}", placeholder.getValue());
+                message = message.replace("{" + placeholder.name() + "}", placeholder.value());
             }
             return mm.deserialize(message);
         } else {
@@ -77,13 +77,13 @@ public class ConfigManager {
     }
 
     // Method to get a message from the config
-    public final Component getMessage(final Player player, final String key, final ConfigPlaceholder... placeholders) {
+    public Component getMessage(final Player player, final String key, final ConfigPlaceholder... placeholders) {
         ConfigurationNode node = messages.node("messages", key);
         String message = node.getString();
 
         if (message != null) {
             for (final ConfigPlaceholder placeholder : placeholders) {
-                message = message.replaceAll("{" + placeholder.getName() + "}", placeholder.getValue());
+                message = message.replaceAll("{" + placeholder.name() + "}", placeholder.value());
             }
             return mm.deserialize(PlaceholderAPI.setPlaceholders(player, message));
         } else {

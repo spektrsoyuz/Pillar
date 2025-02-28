@@ -10,7 +10,7 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 @Getter
 @ConfigSerializable
-public class RedisSettings {
+public final class RedisSettings {
     private final boolean enabled;
     private final String host;
     private final int port;

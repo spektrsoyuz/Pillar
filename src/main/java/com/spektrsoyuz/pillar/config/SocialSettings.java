@@ -5,7 +5,7 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 @Getter
 @ConfigSerializable
-public class SocialSettings {
+public final class SocialSettings {
 
     private final boolean discord;
     private final boolean forums;

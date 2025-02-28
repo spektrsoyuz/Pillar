@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class TPAManager {
+public final class TPAManager {
 
     private final ConfigManager config;
     private final Map<Player, Set<TeleportRequest>> requests;
