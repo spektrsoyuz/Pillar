@@ -26,11 +26,11 @@ public final class PillarPlayerManager {
     }
 
     // Load a PillarPlayer from the database and store in cache
-    public PillarPlayer loadPlayer(final Player player) {
+    public void loadPlayer(final Player player) {
         final PillarPlayer current = getPlayer(player);
         if (current != null) {
             current.setUsername(player.getName());
-            return current;
+            return;
         }
 
         final PillarPlayer pillarPlayer = new PillarPlayer(player);
@@ -44,7 +44,6 @@ public final class PillarPlayerManager {
         });
 
         players.put(player.getUniqueId(), pillarPlayer);
-        return pillarPlayer;
     }
 
     // Get a PillarPlayer from a Player
