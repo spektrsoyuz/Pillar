@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class PillarPlayerManager {
@@ -26,24 +27,25 @@ public final class PillarPlayerManager {
     }
 
     // Load a PillarPlayer from the database and store in cache
-    public void loadPlayer(final Player player) {
+    public CompletableFuture<PillarPlayer> loadPlayer(final Player player) {
         final PillarPlayer current = getPlayer(player);
         if (current != null) {
             current.setUsername(player.getName());
-            return;
+            return CompletableFuture.completedFuture(current);
         }
 
         final PillarPlayer pillarPlayer = new PillarPlayer(player);
-        plugin.getDatabaseManager().queryPillarPlayer(player.getUniqueId()).thenAccept(dbPlayer -> {
+        return plugin.getDatabaseManager().queryPillarPlayer(player.getUniqueId()).thenCompose(dbPlayer -> {
             if (dbPlayer != null) {
                 pillarPlayer.setUsername(dbPlayer.getUsername());
                 pillarPlayer.setBackLocation(dbPlayer.getBackLocation());
             } else {
                 plugin.getDatabaseManager().savePillarPlayer(pillarPlayer);
             }
-        });
 
-        players.put(player.getUniqueId(), pillarPlayer);
+            players.put(player.getUniqueId(), pillarPlayer);
+            return CompletableFuture.completedFuture(pillarPlayer);
+        });
     }
 
     // Get a PillarPlayer from a Player

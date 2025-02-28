@@ -27,7 +27,10 @@ public final class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        plugin.getPillarPlayerManager().loadPlayer(player);
+
+        plugin.getPillarPlayerManager().loadPlayer(player).thenAccept(pillarPlayer -> {
+
+        });
     }
 
     @EventHandler
