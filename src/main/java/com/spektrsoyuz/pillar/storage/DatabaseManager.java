@@ -133,7 +133,7 @@ public final class DatabaseManager {
     public CompletableFuture<PillarPlayer> queryPillarPlayer(final String username) {
         return CompletableFuture.supplyAsync(() -> {
             try (Connection connection = getConnection()) {
-                final PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + playersTable + " WHERE username = ?");
+                final PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + playersTable + " WHERE username = ?;");
                 statement.setString(1, username);
 
                 final ResultSet resultSet = statement.executeQuery();
@@ -208,6 +208,52 @@ public final class DatabaseManager {
             } catch (SQLException ex) {
                 logger.severe("Error saving player home: " + ex.getMessage());
             }
+        });
+    }
+
+    // Asynchronous method to get all PlayerHome results by UUID from the database
+    public CompletableFuture<List<PlayerHome>> queryPlayerHomes(final UUID mojangId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try (Connection connection = getConnection()) {
+                final List<PlayerHome> playerHomes = new ArrayList<>();
+
+                final PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + homesTable + " WHERE id = ?;");
+                statement.setString(1, mojangId.toString());
+
+                final ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    final String name = resultSet.getString("name");
+                    final Location location = deserializeLocation(resultSet.getString("location"));
+                    playerHomes.add(new PlayerHome(mojangId, name, location));
+                }
+                return playerHomes;
+            } catch (SQLException e) {
+                logger.severe("Error querying player homes for " + mojangId + ": " + e.getMessage());
+            }
+            return null;
+        });
+    }
+
+    // Asynchronous method to get all PlayerHome results from the database
+    public CompletableFuture<List<PlayerHome>> queryPlayerHomes() {
+        return CompletableFuture.supplyAsync(() -> {
+            try (Connection connection = getConnection()) {
+                final List<PlayerHome> playerHomes = new ArrayList<>();
+
+                final PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + homesTable + ";");
+
+                final ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    final UUID mojangId = UUID.fromString(resultSet.getString("id"));
+                    final String name = resultSet.getString("name");
+                    final Location location = deserializeLocation(resultSet.getString("location"));
+                    playerHomes.add(new PlayerHome(mojangId, name, location));
+                }
+                return playerHomes;
+            } catch (SQLException e) {
+                logger.severe("Error querying all player homes: " + e.getMessage());
+            }
+            return null;
         });
     }
 

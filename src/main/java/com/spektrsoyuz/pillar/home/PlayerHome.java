@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class PlayerHome {
+public final class PlayerHome {
 
     private final UUID mojangId;
     private final String name;

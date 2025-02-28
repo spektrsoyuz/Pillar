@@ -31,6 +31,7 @@ public final class PlayerListener implements Listener {
         plugin.getPillarPlayerManager().loadPlayer(player).thenAccept(pillarPlayer -> {
 
         });
+        plugin.getHomeManager().loadPlayerHomes(player);
     }
 
     @EventHandler
@@ -41,6 +42,7 @@ public final class PlayerListener implements Listener {
         if (pillarPlayer != null) {
             plugin.getDatabaseManager().savePillarPlayer(pillarPlayer);
         }
+        plugin.getHomeManager().removePlayerHomes(player);
     }
 
     @EventHandler
