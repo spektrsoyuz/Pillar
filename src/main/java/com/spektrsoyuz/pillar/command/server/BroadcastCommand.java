@@ -16,6 +16,8 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
 
+import java.util.List;
+
 @SuppressWarnings({"UnstableApiUsage"})
 public final class BroadcastCommand {
 
@@ -34,6 +36,6 @@ public final class BroadcastCommand {
                         }))
                 .build();
 
-        registrar.register(node);
+        registrar.register(node, "Broadcast a message", List.of("say", "bc"));
     }
 }
