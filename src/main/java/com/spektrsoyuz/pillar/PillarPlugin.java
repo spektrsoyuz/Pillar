@@ -10,6 +10,8 @@ import com.spektrsoyuz.pillar.command.server.*;
 import com.spektrsoyuz.pillar.command.social.*;
 import com.spektrsoyuz.pillar.config.ConfigManager;
 import com.spektrsoyuz.pillar.config.SocialSettings;
+import com.spektrsoyuz.pillar.player.PillarPlayerManager;
+import com.spektrsoyuz.pillar.storage.DatabaseManager;
 import com.spektrsoyuz.pillar.tpa.TPAManager;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -21,6 +23,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class PillarPlugin extends JavaPlugin {
 
     private ConfigManager configManager;
+    private DatabaseManager databaseManager;
+    private PillarPlayerManager pillarPlayerManager;
     private TPAManager tpaManager;
 
     @Override
@@ -37,6 +41,8 @@ public final class PillarPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        databaseManager = new DatabaseManager(this);
+        pillarPlayerManager = new PillarPlayerManager(this);
         tpaManager = new TPAManager(this);
 
         registerCommands();
