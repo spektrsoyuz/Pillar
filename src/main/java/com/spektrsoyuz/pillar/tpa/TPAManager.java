@@ -11,6 +11,7 @@ import com.spektrsoyuz.pillar.config.ConfigPlaceholder;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class TPAManager {
 
@@ -20,7 +21,7 @@ public final class TPAManager {
     // Constructor
     public TPAManager(final PillarPlugin plugin) {
         this.config = plugin.getConfigManager();
-        this.requests = new HashMap<>();
+        this.requests = new ConcurrentHashMap<>();
     }
 
     // Remove all requests for a player

@@ -8,6 +8,7 @@ package com.spektrsoyuz.pillar.storage;
 import com.spektrsoyuz.pillar.PillarPlugin;
 import com.spektrsoyuz.pillar.config.ConfigManager;
 import com.spektrsoyuz.pillar.config.DatabaseSettings;
+import com.spektrsoyuz.pillar.home.PlayerHome;
 import com.spektrsoyuz.pillar.player.PillarPlayer;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -27,6 +28,7 @@ public final class DatabaseManager {
     private final ConfigManager config;
     private HikariDataSource dataSource;
     private String playersTable;
+    private String homesTable;
     private boolean isMySQL;
 
     // Constructor
@@ -43,6 +45,7 @@ public final class DatabaseManager {
 
         isMySQL = settings.getType().equalsIgnoreCase("mysql");
         playersTable = settings.getTablePrefix() + "_players";
+        homesTable = settings.getTablePrefix() + "_homes";
 
         if (isMySQL) {
             hikariConfig.setJdbcUrl("jdbc:mysql://" + settings.getHost() + ":" + settings.getPort() + "/" + settings.getDatabase());
@@ -65,6 +68,7 @@ public final class DatabaseManager {
         try (Connection connection = getConnection()) {
             final Statement statement = connection.createStatement();
             statement.addBatch("CREATE TABLE IF NOT EXISTS " + playersTable + " (id VARCHAR(36) PRIMARY KEY, username VARCHAR(16), back_location VARCHAR(32));");
+            statement.addBatch("CREATE TABLE IF NOT EXISTS " + homesTable + " (id VARCHAR(36) PRIMARY KEY, name VARCHAR(32), location VARCHAR(32));");
             statement.executeBatch();
         } catch (SQLException ex) {
             logger.severe("Error creating tables: " + ex.getMessage());
@@ -169,6 +173,42 @@ public final class DatabaseManager {
         final Location backLocation = deserializeLocation(resultSet.getString("back_location"));
 
         return new PillarPlayer(mojangId, username, backLocation);
+    }
+
+    // Asynchronous method to save a PlayerHome to the database
+    public void savePlayerHome(final PlayerHome playerHome) {
+        CompletableFuture.runAsync(() -> {
+            try (Connection connection = getConnection()) {
+                String sql;
+                PreparedStatement statement;
+
+                if (isMySQL) {
+                    sql = "INSERT INTO " + playersTable + " (id, name, location) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, location = ?;";
+                    statement = connection.prepareStatement(sql);
+
+                    // Insert values if missing
+                    statement.setString(1, playerHome.getMojangId().toString());
+                    statement.setString(2, playerHome.getName());
+                    statement.setString(3, serializeLocation(playerHome.getLocation()));
+
+                    // Update existing values
+                    statement.setString(4, playerHome.getName());
+                    statement.setString(5, serializeLocation(playerHome.getLocation()));
+                } else {
+                    sql = "INSERT OR REPLACE INTO " + playersTable + " (id, name, location) VALUES (?, ?, ?);";
+                    statement = connection.prepareStatement(sql);
+
+                    statement.setString(1, playerHome.getMojangId().toString());
+                    statement.setString(2, playerHome.getName());
+                    statement.setString(3, serializeLocation(playerHome.getLocation()));
+                    statement.execute();
+                }
+
+                statement.execute();
+            } catch (SQLException ex) {
+                logger.severe("Error saving player home: " + ex.getMessage());
+            }
+        });
     }
 
     // Close the data source

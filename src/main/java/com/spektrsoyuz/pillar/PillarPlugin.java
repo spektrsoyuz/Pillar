@@ -13,11 +13,13 @@ import com.spektrsoyuz.pillar.config.SocialSettings;
 import com.spektrsoyuz.pillar.listener.PlayerListener;
 import com.spektrsoyuz.pillar.player.PillarPlayerManager;
 import com.spektrsoyuz.pillar.storage.DatabaseManager;
+import com.spektrsoyuz.pillar.task.SavePillarPlayerTask;
 import com.spektrsoyuz.pillar.tpa.TPAManager;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 @Getter
 @SuppressWarnings({"UnstableApiUsage"})
@@ -50,6 +52,7 @@ public final class PillarPlugin extends JavaPlugin {
 
         registerCommands();
         registerListeners();
+        registerTasks();
     }
 
     @Override
@@ -83,10 +86,6 @@ public final class PillarPlugin extends JavaPlugin {
         });
     }
 
-    private void registerListeners() {
-        new PlayerListener(this);
-    }
-
     private void socialCommands(final Commands registrar) {
         final SocialSettings social = configManager.getSocialSettings();
 
@@ -111,5 +110,15 @@ public final class PillarPlugin extends JavaPlugin {
         if (social.isYoutube()) {
             new YoutubeCommand(this, registrar);
         }
+    }
+
+    private void registerListeners() {
+        new PlayerListener(this);
+    }
+
+    // Register tasks with the Bukkit Scheduler
+    private void registerTasks() {
+        BukkitScheduler scheduler = getServer().getScheduler();
+        scheduler.runTaskTimer(this, new SavePillarPlayerTask(this), 1200, 1200); // update every minute
     }
 }
