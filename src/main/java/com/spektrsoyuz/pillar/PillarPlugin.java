@@ -27,6 +27,11 @@ public final class PillarPlugin extends JavaPlugin {
     public void onLoad() {
         // Plugin load logic
         configManager = new ConfigManager(this);
+
+        int configVersion = configManager.getConfigVersion();
+        if (configVersion != PillarUtils.CONFIG_VERSION) {
+            getLogger().severe(String.format("Config version (" + configVersion + ") does not match expected version (" + PillarUtils.CONFIG_VERSION + "). Proceed with caution!"));
+        }
     }
 
     @Override

@@ -61,6 +61,10 @@ public final class ConfigManager {
         }
     }
 
+    public int getConfigVersion() {
+        return root.node("version").getInt(0);
+    }
+
     // Method to get a message from the config
     public Component getMessage(final String key, final ConfigPlaceholder... placeholders) {
         ConfigurationNode node = messages.node("messages", key);

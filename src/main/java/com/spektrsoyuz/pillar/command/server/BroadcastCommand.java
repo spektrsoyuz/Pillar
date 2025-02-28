@@ -17,7 +17,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
 
 @SuppressWarnings({"UnstableApiUsage"})
-public class BroadcastCommand {
+public final class BroadcastCommand {
 
     // Constructor
     public BroadcastCommand(final PillarPlugin plugin, final Commands registrar) {

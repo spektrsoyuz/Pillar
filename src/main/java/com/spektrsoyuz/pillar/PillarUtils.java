@@ -1,3 +1,8 @@
+/*
+ * Pillar
+ * Created by SpektrSoyuz
+ * All Rights Reserved
+ */
 package com.spektrsoyuz.pillar;
 
 import com.mojang.brigadier.Command;
@@ -16,11 +21,13 @@ import org.bukkit.entity.Player;
 @SuppressWarnings({"UnstableApiUsage"})
 public final class PillarUtils {
 
+    public static final int CONFIG_VERSION = 1;
+
     public static final String PERMISSION_COMMAND_BACK = "pillar.command.back";
     public static final String PERMISSION_COMMAND_GAMEMODE = "pillar.command.gamemode";
     public static final String PERMISSION_COMMAND_GAMEMODE_OTHER = "pillar.command.gamemode.other";
     public static final String PERMISSION_COMMAND_BROADCAST = "pillar.command.broadcast";
-    public static final String PERMISSION_COMMAND_SOCIAL =  "pillar.command.social";
+    public static final String PERMISSION_COMMAND_SOCIAL = "pillar.command.social";
 
     // Method to set the GameMode of a Player
     public static int setGamemode(final PillarPlugin plugin, final CommandContext<CommandSourceStack> context, GameMode gameMode) {
@@ -28,7 +35,7 @@ public final class PillarUtils {
         final String gameModeString = StringUtils.capitalize(gameMode.name().toLowerCase());
 
         player.setGameMode(gameMode);
-        player.sendMessage(plugin.getConfigManager().getMessage("command-broadcast", new ConfigPlaceholder("gamemode", gameModeString)));
+        player.sendMessage(plugin.getConfigManager().getMessage("command-gamemode", new ConfigPlaceholder("gamemode", gameModeString)));
         return Command.SINGLE_SUCCESS;
     }
 
@@ -42,8 +49,8 @@ public final class PillarUtils {
             final Player target = targetResolver.resolve(context.getSource()).getFirst();
 
             target.setGameMode(gameMode);
-            target.sendMessage(plugin.getConfigManager().getMessage("command-broadcast", new ConfigPlaceholder("gamemode", gameModeString)));
-            sender.sendMessage(plugin.getConfigManager().getMessage("command-broadcast-other",
+            target.sendMessage(plugin.getConfigManager().getMessage("command-gamemode", new ConfigPlaceholder("gamemode", gameModeString)));
+            sender.sendMessage(plugin.getConfigManager().getMessage("command-gamemode-other",
                     new ConfigPlaceholder("gamemode", gameModeString),
                     new ConfigPlaceholder("target", target.getName())));
         } catch (CommandSyntaxException e) {

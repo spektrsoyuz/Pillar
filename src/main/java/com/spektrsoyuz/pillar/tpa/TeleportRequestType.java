@@ -1,3 +1,8 @@
+/*
+ * Pillar
+ * Created by SpektrSoyuz
+ * All Rights Reserved
+ */
 package com.spektrsoyuz.pillar.tpa;
 
 public enum TeleportRequestType {
