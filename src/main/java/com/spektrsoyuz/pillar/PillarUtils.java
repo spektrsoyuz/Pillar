@@ -18,6 +18,8 @@ import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 @SuppressWarnings({"UnstableApiUsage"})
 public final class PillarUtils {
 
@@ -26,6 +28,8 @@ public final class PillarUtils {
     public static final String PERMISSION_COMMAND_BACK = "pillar.command.back";
     public static final String PERMISSION_COMMAND_GAMEMODE = "pillar.command.gamemode";
     public static final String PERMISSION_COMMAND_GAMEMODE_OTHER = "pillar.command.gamemode.other";
+    public static final String PERMISSION_COMMAND_KILL = "pillar.command.kill";
+    public static final String PERMISSION_COMMAND_KILL_SEE = "pillar.command.kill.see";
     public static final String PERMISSION_COMMAND_PING = "pillar.command.ping";
     public static final String PERMISSION_COMMAND_BROADCAST = "pillar.command.broadcast";
     public static final String PERMISSION_COMMAND_SOCIAL = "pillar.command.social";
@@ -47,13 +51,15 @@ public final class PillarUtils {
         final PlayerSelectorArgumentResolver targetResolver = context.getArgument("target", PlayerSelectorArgumentResolver.class);
 
         try {
-            final Player target = targetResolver.resolve(context.getSource()).getFirst();
+            final List<Player> targets = targetResolver.resolve(context.getSource());
 
-            target.setGameMode(gameMode);
-            target.sendMessage(plugin.getConfigManager().getMessage("command-gamemode", new ConfigPlaceholder("gamemode", gameModeString)));
-            sender.sendMessage(plugin.getConfigManager().getMessage("command-gamemode-other",
-                    new ConfigPlaceholder("gamemode", gameModeString),
-                    new ConfigPlaceholder("target", target.getName())));
+            for (Player target : targets) {
+                target.setGameMode(gameMode);
+                target.sendMessage(plugin.getConfigManager().getMessage("command-gamemode", new ConfigPlaceholder("gamemode", gameModeString)));
+                sender.sendMessage(plugin.getConfigManager().getMessage("command-gamemode-other",
+                        new ConfigPlaceholder("gamemode", gameModeString),
+                        new ConfigPlaceholder("target", target.getName())));
+            }
         } catch (CommandSyntaxException e) {
             sender.sendMessage(Component.text(e.getMessage(), NamedTextColor.RED));
         }

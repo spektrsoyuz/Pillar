@@ -66,13 +66,17 @@ public final class PillarPlugin extends JavaPlugin {
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
             final Commands registrar = commands.registrar();
 
+            // Player commands
             new BackCommand(this, registrar);
             new GamemodeCommand(this, registrar);
             new GMACommand(this, registrar);
             new GMCCommand(this, registrar);
             new GMSCommand(this, registrar);
             new GMSPCommand(this, registrar);
+            new KillCommand(this, registrar);
             new PingCommand(this, registrar);
+
+            // Server commands
             new BroadcastCommand(this, registrar);
 
             socialCommands(registrar);
