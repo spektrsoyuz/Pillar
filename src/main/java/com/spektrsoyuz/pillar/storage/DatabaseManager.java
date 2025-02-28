@@ -27,6 +27,7 @@ public final class DatabaseManager {
     private final ConfigManager config;
     private HikariDataSource dataSource;
     private String playersTable;
+    private boolean isMySQL;
 
     // Constructor
     public DatabaseManager(final PillarPlugin plugin) {
@@ -39,8 +40,8 @@ public final class DatabaseManager {
     public void init() {
         final DatabaseSettings settings = config.getDatabaseSettings();
         final HikariConfig hikariConfig = new HikariConfig();
-        final boolean isMySQL = settings.getType().equalsIgnoreCase("mysql");
 
+        isMySQL = settings.getType().equalsIgnoreCase("mysql");
         playersTable = settings.getTablePrefix() + "_players";
 
         if (isMySQL) {
@@ -74,18 +75,32 @@ public final class DatabaseManager {
     public void savePillarPlayer(final PillarPlayer pillarPlayer) {
         CompletableFuture.runAsync(() -> {
             try (Connection connection = getConnection()) {
-                final String sql = "INSERT INTO " + playersTable + " (id, username, back_location) VALUES (?, ?, ?)" +
-                        " ON DUPLICATE KEY UPDATE username = ?, back_location = ?;";
-                final PreparedStatement statement = connection.prepareStatement(sql);
+                String sql;
+                PreparedStatement statement;
 
-                // Insert values if missing
-                statement.setString(1, pillarPlayer.getMojangId().toString());
-                statement.setString(2, pillarPlayer.getUsername());
-                statement.setString(3, serializeLocation(pillarPlayer.getBackLocation()));
+                if (isMySQL) {
+                    sql = "INSERT INTO " + playersTable + " (id, username, back_location) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE username = ?, back_location = ?;";
+                    statement = connection.prepareStatement(sql);
 
-                // Update existing values
-                statement.setString(4, pillarPlayer.getUsername());
-                statement.setString(5, serializeLocation(pillarPlayer.getBackLocation()));
+                    // Insert values if missing
+                    statement.setString(1, pillarPlayer.getMojangId().toString());
+                    statement.setString(2, pillarPlayer.getUsername());
+                    statement.setString(3, serializeLocation(pillarPlayer.getBackLocation()));
+
+                    // Update existing values
+                    statement.setString(4, pillarPlayer.getUsername());
+                    statement.setString(5, serializeLocation(pillarPlayer.getBackLocation()));
+                } else {
+                    sql = "INSERT OR REPLACE INTO " + playersTable + " (id, username, back_location) VALUES (?, ?, ?);";
+                    statement = connection.prepareStatement(sql);
+
+                    statement.setString(1, pillarPlayer.getMojangId().toString());
+                    statement.setString(2, pillarPlayer.getUsername());
+                    statement.setString(3, serializeLocation(pillarPlayer.getBackLocation()));
+                    statement.execute();
+                }
+
+                statement.execute();
             } catch (SQLException ex) {
                 logger.severe("Error saving pillar player: " + ex.getMessage());
             }
