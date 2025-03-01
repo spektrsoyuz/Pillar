@@ -19,6 +19,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
 @SuppressWarnings({"UnstableApiUsage"})
 public final class ItemCommand {
 
@@ -40,7 +42,7 @@ public final class ItemCommand {
 
                             return giveItem(player, itemStack, 1);
                         })
-                        .then(Commands.argument("amount", IntegerArgumentType.integer())
+                        .then(Commands.argument("amount", IntegerArgumentType.integer(1, Integer.MAX_VALUE))
                                 .executes(context -> {
                                     final Player player = (Player) context.getSource().getSender();
                                     final ItemStack itemStack = context.getArgument("item", ItemStack.class);
@@ -50,15 +52,22 @@ public final class ItemCommand {
                                 })))
                 .build();
 
-        registrar.register(node, "Summon an item");
+        registrar.register(node, "Summon an item", List.of("i"));
     }
 
     // Method to give a player an item
     private int giveItem(final Player player, final ItemStack itemStack, int amount) {
         final String itemName = PlainTextComponentSerializer.plainText().serialize(itemStack.displayName());
+        int remainingAmount = amount;
 
-        itemStack.setAmount(amount);
-        player.give(itemStack);
+        while (remainingAmount > 0) {
+            int stackAmount = Math.min(remainingAmount, 64);
+            ItemStack stack = itemStack.clone();
+            stack.setAmount(stackAmount);
+            player.give(stack);
+            remainingAmount -= stackAmount;
+        }
+
         player.sendMessage(plugin.getConfigManager().getMessage("command-item",
                 new ConfigPlaceholder("item", itemName),
                 new ConfigPlaceholder("amount", String.valueOf(amount))));
