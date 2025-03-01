@@ -31,7 +31,6 @@ public final class PillarUtils {
     public static final String PERMISSION_COMMAND_GAMEMODE = "pillar.command.gamemode";
     public static final String PERMISSION_COMMAND_GAMEMODE_OTHER = "pillar.command.gamemode.other";
     public static final String PERMISSION_COMMAND_KILL = "pillar.command.kill";
-    public static final String PERMISSION_COMMAND_KILL_SEE = "pillar.command.kill.see";
     public static final String PERMISSION_COMMAND_PING = "pillar.command.ping";
 
     public static final String PERMISSION_COMMAND_BROADCAST = "pillar.command.broadcast";

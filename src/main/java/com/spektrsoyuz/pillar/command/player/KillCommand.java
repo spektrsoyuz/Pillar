@@ -53,9 +53,6 @@ public final class KillCommand {
 
                                     target.setHealth(0);
                                     sender.sendMessage(plugin.getConfigManager().getMessage(senderMessage, new ConfigPlaceholder("target", target.getName())));
-                                    if (target.hasPermission(PillarUtils.PERMISSION_COMMAND_KILL_SEE)) {
-                                        target.sendMessage(plugin.getConfigManager().getMessage("command-kill-see", new ConfigPlaceholder("sender", sender.getName())));
-                                    }
                                 }
                             } catch (CommandSyntaxException e) {
                                 sender.sendMessage(Component.text(e.getMessage(), NamedTextColor.RED));
