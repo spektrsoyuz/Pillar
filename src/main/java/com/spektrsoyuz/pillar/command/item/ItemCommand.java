@@ -14,7 +14,7 @@ import com.spektrsoyuz.pillar.config.ConfigPlaceholder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -57,7 +57,7 @@ public final class ItemCommand {
 
     // Method to give a player an item
     private int giveItem(final Player player, final ItemStack itemStack, int amount) {
-        final String itemName = PlainTextComponentSerializer.plainText().serialize(itemStack.displayName());
+        final String itemName = MiniMessage.miniMessage().serialize(itemStack.displayName());
         int remainingAmount = amount;
 
         while (remainingAmount > 0) {

@@ -16,13 +16,11 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.registry.RegistryKey;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
 
 @SuppressWarnings({"UnstableApiUsage"})
 public final class EnchantCommand {
@@ -61,8 +59,8 @@ public final class EnchantCommand {
     }
 
     private int enchantItem(final Player player, final ItemStack itemStack, final Enchantment enchantment, final int level) {
-        final String itemName = PlainTextComponentSerializer.plainText().serialize(itemStack.displayName());
-        final String enchantmentName = PlainTextComponentSerializer.plainText().serialize(enchantment.displayName(level));
+        final String itemName = MiniMessage.miniMessage().serialize(itemStack.displayName());
+        final String enchantmentName = MiniMessage.miniMessage().serialize(enchantment.displayName(level));
 
         if (itemStack.isEmpty()) {
             player.sendMessage(plugin.getConfigManager().getMessage("command-enchant-air"));
