@@ -25,7 +25,7 @@ public final class RedditCommand {
                 .requires(stack -> stack.getSender().hasPermission(PillarUtils.PERMISSION_COMMAND_SOCIAL))
                 .executes(context -> {
                     final CommandSender sender = context.getSource().getSender();
-                    sender.sendMessage(config.getMessage("command-social-reddit"));
+                    sender.sendMessage(config.getMessage("command-reddit"));
                     return Command.SINGLE_SUCCESS;
                 })
                 .build();

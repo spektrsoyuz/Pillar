@@ -25,7 +25,7 @@ public final class ForumsCommand {
                 .requires(stack -> stack.getSender().hasPermission(PillarUtils.PERMISSION_COMMAND_SOCIAL))
                 .executes(context -> {
                     final CommandSender sender = context.getSource().getSender();
-                    sender.sendMessage(config.getMessage("command-social-forums"));
+                    sender.sendMessage(config.getMessage("command-forums"));
                     return Command.SINGLE_SUCCESS;
                 })
                 .build();

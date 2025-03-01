@@ -25,7 +25,7 @@ public final class TwitchCommand {
                 .requires(stack -> stack.getSender().hasPermission(PillarUtils.PERMISSION_COMMAND_SOCIAL))
                 .executes(context -> {
                     final CommandSender sender = context.getSource().getSender();
-                    sender.sendMessage(config.getMessage("command-social-twitch"));
+                    sender.sendMessage(config.getMessage("command-twitch"));
                     return Command.SINGLE_SUCCESS;
                 })
                 .build();

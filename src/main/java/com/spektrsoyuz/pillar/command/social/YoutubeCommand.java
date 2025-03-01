@@ -27,7 +27,7 @@ public final class YoutubeCommand {
                 .requires(stack -> stack.getSender().hasPermission(PillarUtils.PERMISSION_COMMAND_SOCIAL))
                 .executes(context -> {
                     final CommandSender sender = context.getSource().getSender();
-                    sender.sendMessage(config.getMessage("command-social-youtube"));
+                    sender.sendMessage(config.getMessage("command-youtube"));
                     return Command.SINGLE_SUCCESS;
                 })
                 .build();

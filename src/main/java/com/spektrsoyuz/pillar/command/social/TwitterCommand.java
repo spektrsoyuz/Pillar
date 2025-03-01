@@ -27,7 +27,7 @@ public final class TwitterCommand {
                 .requires(stack -> stack.getSender().hasPermission(PillarUtils.PERMISSION_COMMAND_SOCIAL))
                 .executes(context -> {
                     final CommandSender sender = context.getSource().getSender();
-                    sender.sendMessage(config.getMessage("command-social-twitter"));
+                    sender.sendMessage(config.getMessage("command-twitter"));
                     return Command.SINGLE_SUCCESS;
                 })
                 .build();
