@@ -25,6 +25,8 @@ public final class PillarUtils {
 
     public static final int CONFIG_VERSION = 1;
 
+    public static final String PERMISSION_COMMAND_ENCHANT = "pillar.command.enchant";
+    public static final String PERMISSION_COMMAND_ENCHANT_UNSAFE = "pillar.command.enchant.unsafe";
     public static final String PERMISSION_COMMAND_ITEM = "pillar.command.item";
 
     public static final String PERMISSION_COMMAND_BACK = "pillar.command.back";

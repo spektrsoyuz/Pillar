@@ -5,6 +5,7 @@
  */
 package com.spektrsoyuz.pillar;
 
+import com.spektrsoyuz.pillar.command.item.EnchantCommand;
 import com.spektrsoyuz.pillar.command.item.ItemCommand;
 import com.spektrsoyuz.pillar.command.player.*;
 import com.spektrsoyuz.pillar.command.server.*;
@@ -71,6 +72,7 @@ public final class PillarPlugin extends JavaPlugin {
             final Commands registrar = commands.registrar();
 
             // Item commands
+            new EnchantCommand(this, registrar);
             new ItemCommand(this, registrar);
 
             // Player commands
